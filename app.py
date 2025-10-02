@@ -7,12 +7,12 @@ import joblib
 # ==========================
 @st.cache_resource
 def load_model():
-    return joblib.load("heart_nb_pipeline.pkl")  # adjust filename if needed
+    return joblib.load("heart_nb_pipeline.pkl")
 
 model = load_model()
 
 # ==========================
-# Custom CSS (White + Blue Theme)
+# Custom CSS (White + Blue + Card Style)
 # ==========================
 st.markdown("""
 <style>
@@ -20,40 +20,49 @@ st.markdown("""
 body, p, div, label {
     font-family: 'Segoe UI', sans-serif;
     font-size: 18px !important;
-    color: #0D47A1 !important; /* Deep blue text */
+    color: #000000 !important; /* Black text */
 }
 
-/* Title */
+/* Titles */
 h1, h2, h3 {
-    color: #0D47A1 !important;  
+    color: #0D47A1 !important;
     font-weight: 700 !important;
 }
 
 /* Sidebar */
 [data-testid="stSidebar"] {
-    background-color: #0D47A1 !important; 
-    color: white !important;
+    background-color: #f9f9f9 !important; 
+    color: black !important;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 [data-testid="stSidebar"] label {
-    color: white !important;
+    font-weight: 600 !important;
 }
-[data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
-    color: white !important;
+
+/* Input fields */
+input, select, textarea {
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1) !important;
+    padding: 6px !important;
 }
 
 /* Buttons */
 div.stButton > button {
     background-color: #0D47A1 !important;
     color: white !important;
-    border-radius: 8px !important;
-    padding: 10px 20px !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
     font-size: 18px !important;
+    font-weight: 600 !important;
     border: none !important;
+    box-shadow: 3px 3px 12px rgba(0,0,0,0.2);
     transition: 0.3s;
 }
 div.stButton > button:hover {
     background-color: #1565C0 !important;
-    transform: scale(1.03);
+    transform: scale(1.05);
+    box-shadow: 4px 4px 16px rgba(0,0,0,0.3);
 }
 
 /* Result Box */
@@ -66,6 +75,16 @@ div.stButton > button:hover {
     font-size: 22px;
     font-weight: 600;
     margin: 20px 0;
+    box-shadow: 3px 3px 12px rgba(0,0,0,0.2);
+}
+
+/* Card containers */
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -134,29 +153,32 @@ if st.button("🔍 Predict Heart Disease"):
         st.dataframe(input_df, use_container_width=True)
 
 # ==========================
-# Info Sections with Links
+# Info Sections in Card Containers
 # ==========================
 st.markdown("### 💡 Heart Health Tips")
-st.write("""
+st.markdown("""
+<div class="card">
 - 🥗 **Eat a balanced diet** rich in fruits, vegetables, and whole grains.  
-  👉 [Learn more (WHO)](https://www.who.int/news-room/fact-sheets/detail/healthy-diet)  
+  👉 [WHO: Healthy Diet](https://www.who.int/news-room/fact-sheets/detail/healthy-diet)  
 
 - 🏃 **Exercise regularly** (at least 30 minutes per day).  
-  👉 [See CDC Guidelines](https://www.cdc.gov/physical-activity-basics/guidelines/adults.html)  
+  👉 [CDC: Physical Activity](https://www.cdc.gov/physical-activity-basics/guidelines/adults.html)  
 
 - 🚭 **Avoid smoking and limit alcohol intake**.  
-  👉 [Quit Smoking Help (CDC)](https://www.cdc.gov/tobacco/quit_smoking/index.htm)  
+  👉 [Quit Smoking - CDC](https://www.cdc.gov/tobacco/quit_smoking/index.htm)  
 
 - 🩺 **Monitor blood pressure, cholesterol, and blood sugar regularly**.  
-  👉 [Mayo Clinic: Heart Disease Prevention](https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease-prevention/art-20046502)  
+  👉 [Mayo Clinic Guide](https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease-prevention/art-20046502)  
 
 - 👨‍⚕️ **Visit your doctor for regular checkups**.  
-""")
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("### ⚡ Risk Factors to Watch")
-st.write("""
+st.markdown("""
+<div class="card">
 - 🩸 **High blood pressure (Hypertension)**  
-  👉 [American Heart Association: Hypertension](https://www.heart.org/en/health-topics/high-blood-pressure)  
+  👉 [AHA: Hypertension](https://www.heart.org/en/health-topics/high-blood-pressure)  
 
 - 🧬 **High cholesterol (Hyperlipidemia)**  
   👉 [CDC: Cholesterol Facts](https://www.cdc.gov/cholesterol/facts.htm)  
@@ -168,11 +190,12 @@ st.write("""
   👉 [CDC: Alcohol and Your Health](https://www.cdc.gov/alcohol/fact-sheets/alcohol-use.htm)  
 
 - ⚖️ **Obesity and sedentary lifestyle**  
-  👉 [WHO: Obesity and Overweight](https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight)  
+  👉 [WHO: Obesity Facts](https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight)  
 
 - 👨‍👩‍👧‍👦 **Family history of heart disease**  
-  👉 [NIH: Family History and Heart Disease](https://www.nhlbi.nih.gov/health/heart-disease)  
-""")
+  👉 [NIH: Heart Disease & Family History](https://www.nhlbi.nih.gov/health/heart-disease)  
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("### 📞 Contact Your Doctor")
 st.info("""
