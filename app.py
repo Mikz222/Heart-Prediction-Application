@@ -38,23 +38,24 @@ def user_input():
     heartRate = st.number_input("Heart Rate", min_value=40, max_value=200, value=75)
     glucose = st.number_input("Glucose Level", min_value=40, max_value=300, value=80)
 
-    data = {
-        "age": age,
-        "gender": gender,
-        "education": education,
-        "currentSmoker": currentSmoker,
-        "cigsPerDay": cigsPerDay,
-        "BPMeds": BPMeds,
-        "prevalentStroke": prevalentStroke,
-        "prevalentHyp": prevalentHyp,
-        "diabetes": diabetes,
-        "totChol": totChol,
-        "sysBP": sysBP,
-        "diaBP": diaBP,
-        "BMI": BMI,
-        "heartRate": heartRate,
-        "glucose": glucose,
-    }
+   data = {
+    "age": age,
+    "Gender": gender,   # <- match case
+    "education": education,
+    "currentSmoker": currentSmoker,
+    "cigsPerDay": cigsPerDay,
+    "BPMeds": BPMeds,
+    "prevalentStroke": prevalentStroke,
+    "prevalentHyp": prevalentHyp,
+    "diabetes": diabetes,
+    "totChol": totChol,
+    "sysBP": sysBP,
+    "diaBP": diaBP,
+    "BMI": BMI,
+    "heartRate": heartRate,
+    "glucose": glucose,
+}
+
 
     return pd.DataFrame([data])
 
@@ -75,3 +76,4 @@ if st.button("🔍 Predict"):
 
     st.markdown("### 📊 Entered Patient Data")
     st.dataframe(input_df, use_container_width=True)
+
