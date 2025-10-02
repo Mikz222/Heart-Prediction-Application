@@ -20,24 +20,28 @@ st.set_page_config(page_title="Heart Disease Prediction", page_icon="❤️", la
 st.markdown("""
     <style>
     body {
-        background-color: #F8F9FA;
+        background: linear-gradient(135deg, #f8f9fa, #ffecec);
         font-family: 'Segoe UI', sans-serif;
     }
     h1, h2, h3 {
-        color: #B22222;
+        color: #9B1B30;
     }
     .stButton>button {
         width: 100%;
-        background: linear-gradient(90deg, #DC143C, #B22222);
+        background: linear-gradient(90deg, #FF4B5C, #C81D25);
         color: white;
         border-radius: 12px;
-        height: 3em;
+        height: 3.2em;
         font-size: 18px;
+        font-weight: bold;
         border: none;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+        transition: 0.3s;
     }
     .stButton>button:hover {
-        background: linear-gradient(90deg, #B22222, #DC143C);
+        background: linear-gradient(90deg, #C81D25, #FF4B5C);
         color: #FFD700;
+        transform: scale(1.02);
     }
     .result-card {
         padding: 25px;
@@ -46,16 +50,16 @@ st.markdown("""
         margin-top: 20px;
         font-size: 22px;
         font-weight: bold;
-        box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
     }
     .positive {
-        background-color: #FDECEC;
-        border: 3px solid #DC143C;
+        background-color: #FDEDED;
+        border: 3px solid #C81D25;
         color: #8B0000;
     }
     .negative {
-        background-color: #E6F9EC;
-        border: 3px solid #2E8B57;
+        background-color: #E6FFEC;
+        border: 3px solid #228B22;
         color: #155724;
     }
     </style>
@@ -66,16 +70,15 @@ st.markdown("""
 # ==========================
 st.title("❤️ Heart Disease Prediction App")
 st.markdown("""
-Welcome to the **Heart Disease Prediction Tool**.  
-Please enter the patient’s medical details below.  
+This is an **AI-powered tool** that helps estimate the likelihood of heart disease  
+based on health information you provide.  
 
-- The model is trained on health data (age, cholesterol, blood pressure, etc.).  
-- Predictions are **probabilities** of having heart disease.  
-- **Result**:  
-  - ✅ *Unlikely Heart Disease* → Model predicts no risk.  
-  - ⚠️ *Likely Heart Disease* → Model predicts possible risk.  
+🔎 **How to use:**  
+1. Fill in the patient’s medical details.  
+2. Click **Predict Heart Disease**.  
+3. See whether the patient is most likely to **have** or **not have** heart disease.  
 
-Use this as a **support tool only**. It does not replace professional medical advice.
+⚠️ **Note:** This is a support tool only, not a substitute for professional medical advice.
 """)
 
 # ==========================
@@ -84,41 +87,40 @@ Use this as a **support tool only**. It does not replace professional medical ad
 def user_input():
     st.subheader("🩺 Patient Medical Information")
 
-    age = st.number_input("Age", min_value=20, max_value=100, value=40)
+    age = st.number_input("Age (years)", min_value=20, max_value=100, value=40)
 
-    gender = st.selectbox("Gender", ["male", "female"])
+    gender = st.selectbox("Gender", ["Male", "Female"])
 
-    education = st.selectbox("Education Level (1–4)", ["1", "2", "3", "4"])
-    st.caption("1 = Primary, 2 = Secondary, 3 = Tertiary, 4 = Graduate")
+    education = st.selectbox("Education Level", ["1 - Primary", "2 - Secondary", "3 - College", "4 - Graduate"])
 
-    currentSmoker = st.selectbox("Current Smoker", [0, 1])
+    currentSmoker = st.selectbox("Currently Smokes?", [0, 1])
     st.caption("0 = No, 1 = Yes")
 
-    cigsPerDay = st.number_input("Cigarettes per Day", min_value=0, max_value=60, value=0)
+    cigsPerDay = st.number_input("Cigarettes smoked per day", min_value=0, max_value=60, value=0)
 
-    BPMeds = st.selectbox("On Blood Pressure Medication", [0, 1])
+    BPMeds = st.selectbox("Taking Blood Pressure Medication?", [0, 1])
     st.caption("0 = No, 1 = Yes")
 
-    prevalentStroke = st.selectbox("History of Stroke", [0, 1])
+    prevalentStroke = st.selectbox("History of Stroke?", [0, 1])
     st.caption("0 = No, 1 = Yes")
 
-    prevalentHyp = st.selectbox("Hypertension", [0, 1])
+    prevalentHyp = st.selectbox("Diagnosed with Hypertension?", [0, 1])
     st.caption("0 = No, 1 = Yes")
 
-    diabetes = st.selectbox("Diabetes", [0, 1])
+    diabetes = st.selectbox("Has Diabetes?", [0, 1])
     st.caption("0 = No, 1 = Yes")
 
     totChol = st.number_input("Total Cholesterol (mg/dL)", min_value=100, max_value=600, value=200)
-    sysBP = st.number_input("Systolic BP", min_value=80, max_value=250, value=120)
-    diaBP = st.number_input("Diastolic BP", min_value=50, max_value=150, value=80)
+    sysBP = st.number_input("Systolic Blood Pressure", min_value=80, max_value=250, value=120)
+    diaBP = st.number_input("Diastolic Blood Pressure", min_value=50, max_value=150, value=80)
     BMI = st.number_input("Body Mass Index (BMI)", min_value=10.0, max_value=60.0, value=25.0, step=0.1)
-    heartRate = st.number_input("Heart Rate", min_value=40, max_value=200, value=75)
-    glucose = st.number_input("Glucose Level", min_value=40, max_value=300, value=80)
+    heartRate = st.number_input("Heart Rate (bpm)", min_value=40, max_value=200, value=75)
+    glucose = st.number_input("Glucose Level (mg/dL)", min_value=40, max_value=300, value=80)
 
     data = {
         "age": age,
-        "Gender": gender,
-        "education": education,
+        "Gender": gender.lower(),
+        "education": education.split(" - ")[0],
         "currentSmoker": currentSmoker,
         "cigsPerDay": cigsPerDay,
         "BPMeds": BPMeds,
@@ -147,12 +149,12 @@ if st.button("🔍 Predict Heart Disease"):
     st.subheader("📌 Prediction Result")
     if pred == 1:
         st.markdown(
-            f"<div class='result-card positive'>⚠️ The model predicts: <br><span style='font-size:26px;'>Likely Heart Disease</span><br>Confidence: {proba*100:.2f}%</div>",
+            f"<div class='result-card positive'>⚠️ The model predicts: <br><span style='font-size:26px;'>Most likely have heart disease</span><br>Confidence: {proba*100:.2f}%</div>",
             unsafe_allow_html=True
         )
     else:
         st.markdown(
-            f"<div class='result-card negative'>✅ The model predicts: <br><span style='font-size:26px;'>Unlikely Heart Disease</span><br>Confidence: {(1-proba)*100:.2f}%</div>",
+            f"<div class='result-card negative'>✅ The model predicts: <br><span style='font-size:26px;'>Most likely don’t have heart disease</span><br>Confidence: {(1-proba)*100:.2f}%</div>",
             unsafe_allow_html=True
         )
 
