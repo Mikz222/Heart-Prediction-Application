@@ -19,7 +19,7 @@ st.markdown("""
 body, p, div, label {
     font-family: 'Roboto', 'Segoe UI', sans-serif;
     font-size: 18px !important;
-    color: #FFFFFF !important;  /* White text */
+    color: #2C2C2C !important;  /* Dark gray for better contrast */
     background-color: #FDF6EC !important; /* Beige background */
 }
 
@@ -27,14 +27,14 @@ body, p, div, label {
 h1 {
     font-size: 42px !important;
     font-weight: 700 !important;
-    color: #FFFFFF !important;
+    color: #1E3D59 !important;   /* Deep navy title */
     text-align: center !important;
     margin-bottom: 25px;
 }
 
 /* Subheaders */
 h2, h3 {
-    color: #FFFFFF !important;
+    color: #E07A5F !important;   /* Warm coral subheaders */
     font-weight: 600 !important;
 }
 
@@ -42,15 +42,15 @@ h2, h3 {
 [data-testid="stSidebar"] {
     background-color: #FFFFFF !important;
     padding: 20px !important;
-    border-right: 3px solid #00BFA6 !important;
+    border-right: 3px solid #1E3D59 !important;
     font-size: 16px !important;
-    color: #00332E !important; /* Sidebar text stays readable */
+    color: #2C2C2C !important;
 }
 
 /* Buttons */
 div.stButton > button {
-    background-color: #00BFA6 !important;
-    color: white !important;
+    background-color: #1E3D59 !important;  /* Deep navy button */
+    color: #FFFFFF !important;
     border-radius: 12px !important;
     padding: 12px 24px !important;
     font-size: 18px !important;
@@ -59,7 +59,7 @@ div.stButton > button {
     transition: 0.3s;
 }
 div.stButton > button:hover {
-    background-color: #009688 !important;
+    background-color: #E07A5F !important;  /* Coral on hover */
     transform: scale(1.03);
 }
 
@@ -67,7 +67,7 @@ div.stButton > button:hover {
 .result-box {
     padding: 25px;
     border-radius: 15px;
-    background: linear-gradient(135deg, #00BFA6, #009688);
+    background: linear-gradient(135deg, #1E3D59, #E07A5F);
     color: white !important;
     text-align: center;
     font-size: 22px;
@@ -81,13 +81,14 @@ div.stButton > button:hover {
     padding: 18px;
     margin: 15px 0;
     border-radius: 12px;
-    background-color: rgba(0, 191, 166, 0.2);
-    border: 1px solid #00BFA6;
-    color: #FFFFFF;
+    background-color: #FFFFFF;
+    border: 2px solid #E07A5F;
+    color: #2C2C2C !important;
     font-size: 16px;
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 
 # ==========================
@@ -202,6 +203,7 @@ If you experience symptoms like **chest pain, shortness of breath, dizziness, or
 please **consult a healthcare professional immediately**.  
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
