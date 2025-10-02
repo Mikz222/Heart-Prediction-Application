@@ -173,17 +173,46 @@ with st.sidebar:
 st.title("💙 Heart Disease Prediction App")
 st.markdown("⚠️ *This tool provides insights but does not replace professional medical advice.*")
 
+# ==========================
+# Prediction
+# ==========================
 if st.button("🔍 Predict Heart Disease"):
     proba = model.predict_proba(input_df)[:, 1][0]
     pred = model.predict(input_df)[0]
 
+    # Result Message
     if pred == 1:
-        st.markdown(f"<div class='result-box'>⚠️ High Risk: Heart disease likely<br>🔢 Risk Probability: {proba*100:.2f}%<br>💡 Recommendation: Please consult a cardiologist immediately.</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"<div class='result-box'>⚠️ High Risk: Heart disease likely<br>"
+            f"🔢 Risk Probability: {proba*100:.2f}%<br>"
+            f"💡 Recommendation: Please consult a cardiologist immediately.</div>",
+            unsafe_allow_html=True
+        )
     else:
-        st.markdown(f"<div class='result-box'>✅ Low Risk: Heart disease unlikely<br>🔢 Risk Probability: {(1-proba)*100:.2f}%<br>💡 Recommendation: Maintain healthy lifestyle habits.</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"<div class='result-box'>✅ Low Risk: Heart disease unlikely<br>"
+            f"🔢 Risk Probability: {(1-proba)*100:.2f}%<br>"
+            f"💡 Recommendation: Maintain healthy lifestyle habits.</div>",
+            unsafe_allow_html=True
+        )
+
+    # Extra Prediction Statistics
+    st.subheader("📊 Prediction Statistics")
+    st.progress(int(proba * 100))  # probability progress bar
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("🔹 Risk Probability", f"{proba*100:.2f}%")
+    with col2:
+        st.metric("✅ Confidence (Low Risk)", f"{(1-proba)*100:.2f}%")
+    with col3:
+        st.metric("⚠️ Confidence (High Risk)", f"{proba*100:.2f}%")
+
+    st.info("ℹ️ *These values are based on model probability outputs. The threshold is **50%** for classifying high vs. low risk.*")
 
     with st.expander("📋 Patient Data Entered"):
         st.dataframe(input_df, use_container_width=True)
+
 
 # ==========================
 # Info Section (Two Cards)
@@ -218,3 +247,4 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
