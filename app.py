@@ -13,74 +13,73 @@ model = load_model()
 # ==========================
 # Custom CSS for Styling
 # ==========================
-st.markdown(
-    """
-    <style>
-    /* General Font */
-    html, body, [class*="css"] {
-        font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-        font-size: 18px;  /* Bigger font */
-        color: #00332E;
-    }
+st.markdown("""
+<style>
+/* Global font and size */
+body, p, div, label {
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    font-size: 18px !important;
+    color: #00332E;
+}
 
-    /* Title */
-    .css-10trblm {  
-        font-size: 42px !important;
-        font-weight: bold !important;
-        color: #00695C !important;
-        text-align: center !important;
-        margin-bottom: 20px !important;
-    }
+/* Title */
+h1 {
+    font-size: 42px !important;
+    font-weight: 700 !important;
+    color: #00695C !important;
+    text-align: center !important;
+    margin-bottom: 25px;
+}
 
-    /* Subheader */
-    h2, h3, h4 {
-        color: #00796B !important;
-        font-weight: 600 !important;
-    }
+/* Subheaders */
+h2, h3 {
+    color: #00796B !important;
+    font-weight: 600 !important;
+}
 
-    /* Sidebar styling */
-    section[data-testid="stSidebar"] {
-        background-color: #E6F5F3;
-        padding: 20px;
-        border-right: 3px solid #00BFA6;
-    }
+/* Sidebar (clinic form style) */
+[data-testid="stSidebar"] {
+    background-color: #E6F5F3 !important;
+    padding: 20px !important;
+    border-right: 3px solid #00BFA6 !important;
+    font-size: 16px !important;
+}
 
-    /* Buttons */
-    div.stButton > button {
-        background-color: #00BFA6;
-        color: white;
-        border-radius: 12px;
-        padding: 12px 24px;
-        font-size: 18px;
-        font-weight: bold;
-        border: none;
-    }
-    div.stButton > button:hover {
-        background-color: #009688;
-        color: white;
-    }
+/* Button styling */
+div.stButton > button {
+    background-color: #00BFA6 !important;
+    color: white !important;
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    border: none !important;
+    transition: 0.3s;
+}
+div.stButton > button:hover {
+    background-color: #009688 !important;
+    transform: scale(1.03);
+}
 
-    /* Prediction Result Card */
-    .result-box {
-        padding: 20px;
-        border-radius: 15px;
-        background-color: #E6F5F3;
-        border: 2px solid #00BFA6;
-        margin: 20px 0;
-    }
+/* Prediction result card */
+.result-box {
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #E6F5F3 !important;
+    border: 2px solid #00BFA6 !important;
+    margin: 20px 0;
+    font-size: 20px;
+    font-weight: 500;
+}
 
-    /* Data Table */
-    .stDataFrame {
-        border-radius: 12px;
-        border: 2px solid #00BFA6;
-        background-color: #FFFFFF;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
+/* Dataframe styling */
+.stDataFrame {
+    border-radius: 10px !important;
+    border: 2px solid #00BFA6 !important;
+    background-color: #FFFFFF !important;
+}
+</style>
+""", unsafe_allow_html=True)
 # ==========================
 # Streamlit Page Settings
 # ==========================
@@ -170,4 +169,5 @@ if st.button("🔍 Predict Heart Disease"):
 
     st.markdown("### 📋 Patient Data Entered")
     st.dataframe(input_df, use_container_width=True)
+
 
