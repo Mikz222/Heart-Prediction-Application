@@ -19,33 +19,35 @@ st.markdown("""
 body, p, div, label {
     font-family: 'Roboto', 'Segoe UI', sans-serif;
     font-size: 18px !important;
-    color: #00332E;
+    color: #FFFFFF !important;  /* White text */
+    background-color: #FDF6EC !important; /* Beige background */
 }
 
 /* Title */
 h1 {
     font-size: 42px !important;
     font-weight: 700 !important;
-    color: #00695C !important;
+    color: #FFFFFF !important;
     text-align: center !important;
     margin-bottom: 25px;
 }
 
 /* Subheaders */
 h2, h3 {
-    color: #00796B !important;
+    color: #FFFFFF !important;
     font-weight: 600 !important;
 }
 
-/* Sidebar (clinic form style) */
+/* Sidebar */
 [data-testid="stSidebar"] {
-    background-color: #E6F5F3 !important;
+    background-color: #FFFFFF !important;
     padding: 20px !important;
     border-right: 3px solid #00BFA6 !important;
     font-size: 16px !important;
+    color: #00332E !important; /* Sidebar text stays readable */
 }
 
-/* Button styling */
+/* Buttons */
 div.stButton > button {
     background-color: #00BFA6 !important;
     color: white !important;
@@ -61,33 +63,32 @@ div.stButton > button:hover {
     transform: scale(1.03);
 }
 
-/* Prediction result card */
+/* Prediction Result Card */
 .result-box {
-    padding: 20px;
-    border-radius: 12px;
-    background-color: #E6F5F3 !important;
-    border: 2px solid #00BFA6 !important;
-    margin: 20px 0;
-    font-size: 20px;
-    font-weight: 500;
+    padding: 25px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #00BFA6, #009688);
+    color: white !important;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 30px 0;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
 }
 
-/* Dataframe styling */
-.stDataFrame {
-    border-radius: 10px !important;
-    border: 2px solid #00BFA6 !important;
-    background-color: #FFFFFF !important;
+/* Info Cards */
+.info-card {
+    padding: 18px;
+    margin: 15px 0;
+    border-radius: 12px;
+    background-color: rgba(0, 191, 166, 0.2);
+    border: 1px solid #00BFA6;
+    color: #FFFFFF;
+    font-size: 16px;
 }
 </style>
 """, unsafe_allow_html=True)
-# ==========================
-# Streamlit Page Settings
-# ==========================
-st.set_page_config(
-    page_title="Heart Disease Prediction",
-    page_icon="❤️",
-    layout="wide"
-)
+
 
 # ==========================
 # Sidebar - Patient Input
@@ -169,5 +170,6 @@ if st.button("🔍 Predict Heart Disease"):
 
     st.markdown("### 📋 Patient Data Entered")
     st.dataframe(input_df, use_container_width=True)
+
 
 
