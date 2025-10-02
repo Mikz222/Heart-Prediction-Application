@@ -10,6 +10,76 @@ def load_model():
     return joblib.load("heart_nb_pipeline.pkl")  # make sure filename matches
 
 model = load_model()
+# ==========================
+# Custom CSS for Styling
+# ==========================
+st.markdown(
+    """
+    <style>
+    /* General Font */
+    html, body, [class*="css"] {
+        font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+        font-size: 18px;  /* Bigger font */
+        color: #00332E;
+    }
+
+    /* Title */
+    .css-10trblm {  
+        font-size: 42px !important;
+        font-weight: bold !important;
+        color: #00695C !important;
+        text-align: center !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Subheader */
+    h2, h3, h4 {
+        color: #00796B !important;
+        font-weight: 600 !important;
+    }
+
+    /* Sidebar styling */
+    section[data-testid="stSidebar"] {
+        background-color: #E6F5F3;
+        padding: 20px;
+        border-right: 3px solid #00BFA6;
+    }
+
+    /* Buttons */
+    div.stButton > button {
+        background-color: #00BFA6;
+        color: white;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+    }
+    div.stButton > button:hover {
+        background-color: #009688;
+        color: white;
+    }
+
+    /* Prediction Result Card */
+    .result-box {
+        padding: 20px;
+        border-radius: 15px;
+        background-color: #E6F5F3;
+        border: 2px solid #00BFA6;
+        margin: 20px 0;
+    }
+
+    /* Data Table */
+    .stDataFrame {
+        border-radius: 12px;
+        border: 2px solid #00BFA6;
+        background-color: #FFFFFF;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # ==========================
 # Streamlit Page Settings
@@ -100,3 +170,4 @@ if st.button("🔍 Predict Heart Disease"):
 
     st.markdown("### 📋 Patient Data Entered")
     st.dataframe(input_df, use_container_width=True)
+
