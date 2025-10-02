@@ -210,27 +210,34 @@ if st.button("🔍 Predict Heart Disease"):
 
     st.info("ℹ️ *These values are based on model probability outputs. The threshold is **50%** for classifying high vs. low risk.*")
 
-      # ==========================
-    # Patient Data Entered Box
-    # ==========================
+
     with st.expander("📋 Patient Data Entered", expanded=True):
         st.markdown(
             """
             <style>
-            .big-dataframe-container {
-                background-color: #ffffff;
+            .patient-data-box {
+                background: linear-gradient(135deg, #f9f9f9, #ffffff);
                 border-radius: 12px;
                 padding: 15px;
-                box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-                margin-top: 10px;
+                box-shadow: 0px 3px 12px rgba(0,0,0,0.12);
+                margin-top: 12px;
+                margin-bottom: 12px;
+                border: 1px solid #e0e0e0;
+            }
+            .patient-data-box h4 {
+                text-align: center;
+                color: #0D47A1;
+                font-weight: 700;
                 margin-bottom: 10px;
             }
             </style>
             """, unsafe_allow_html=True
         )
-        st.markdown("<div class='big-dataframe-container'>", unsafe_allow_html=True)
-        st.dataframe(input_df, use_container_width=True, height=400)  # taller table
+        st.markdown("<div class='patient-data-box'>", unsafe_allow_html=True)
+        st.markdown("<h4>Entered Patient Details</h4>", unsafe_allow_html=True)
+        st.dataframe(input_df, use_container_width=True, height=220)  # smaller height
         st.markdown("</div>", unsafe_allow_html=True)
+
 # ==========================
 # Info Section (Two Cards)
 # ==========================
@@ -264,6 +271,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 
