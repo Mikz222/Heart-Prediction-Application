@@ -12,18 +12,17 @@ def load_model():
 model = load_model()
 
 # ==========================
-# Custom CSS (White + Blue + Card Style)
+# Custom CSS (Clean UI)
 # ==========================
 st.markdown("""
 <style>
-/* Global */
+/* Global font */
 body, p, div, label {
     font-family: 'Segoe UI', sans-serif;
-    font-size: 18px !important;
-    color: #000000 !important; /* Black text */
+    color: #000000 !important;
 }
 
-/* Titles */
+/* Title */
 h1, h2, h3 {
     color: #0D47A1 !important;
     font-weight: 700 !important;
@@ -31,38 +30,37 @@ h1, h2, h3 {
 
 /* Sidebar */
 [data-testid="stSidebar"] {
-    background-color: #f9f9f9 !important; 
-    color: black !important;
+    background-color: #f9f9f9 !important;
+    padding: 20px;
     box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
-[data-testid="stSidebar"] label {
-    font-weight: 600 !important;
-}
 
-/* Input fields */
-input, select, textarea {
+/* Remove double ghost text fields */
+input, textarea, select {
+    background-color: white !important;
     border: 1px solid #ccc !important;
-    border-radius: 6px !important;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.1) !important;
-    padding: 6px !important;
+    border-radius: 8px !important;
+    box-shadow: 1px 1px 8px rgba(0,0,0,0.1) !important;
+    font-size: 16px !important;
+    padding: 8px 10px !important;
 }
 
 /* Buttons */
 div.stButton > button {
-    background-color: #0D47A1 !important;
+    background: linear-gradient(135deg, #1565C0, #0D47A1) !important;
     color: white !important;
-    border-radius: 10px !important;
-    padding: 12px 24px !important;
+    border-radius: 12px !important;
+    padding: 14px 28px !important;
     font-size: 18px !important;
-    font-weight: 600 !important;
+    font-weight: bold !important;
     border: none !important;
-    box-shadow: 3px 3px 12px rgba(0,0,0,0.2);
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
     transition: 0.3s;
 }
 div.stButton > button:hover {
-    background-color: #1565C0 !important;
+    background: linear-gradient(135deg, #1E88E5, #1565C0) !important;
     transform: scale(1.05);
-    box-shadow: 4px 4px 16px rgba(0,0,0,0.3);
+    box-shadow: 4px 4px 14px rgba(0,0,0,0.3);
 }
 
 /* Result Box */
@@ -78,13 +76,13 @@ div.stButton > button:hover {
     box-shadow: 3px 3px 12px rgba(0,0,0,0.2);
 }
 
-/* Card containers */
+/* Card Containers */
 .card {
     background-color: #ffffff;
     border-radius: 12px;
     padding: 20px;
+    box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
     margin-bottom: 20px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -131,15 +129,12 @@ with st.sidebar:
     input_df = pd.DataFrame([input_data])
 
 # ==========================
-# Main Page Layout
+# Main Page
 # ==========================
 st.title("💙 Heart Disease Prediction App")
-st.markdown("""
-Enter patient details in the sidebar to estimate the risk of heart disease.  
-⚠️ *Note: This tool does not replace medical advice.*
-""")
+st.markdown("⚠️ *Note: This tool does not replace medical advice.*")
 
-# --- Prediction ---
+# Prediction
 if st.button("🔍 Predict Heart Disease"):
     proba = model.predict_proba(input_df)[:, 1][0]
     pred = model.predict(input_df)[0]
@@ -153,52 +148,31 @@ if st.button("🔍 Predict Heart Disease"):
         st.dataframe(input_df, use_container_width=True)
 
 # ==========================
-# Info Sections in Card Containers
+# Info Section (Side by Side Cards)
 # ==========================
-st.markdown("### 💡 Heart Health Tips")
-st.markdown("""
-<div class="card">
-- 🥗 **Eat a balanced diet** rich in fruits, vegetables, and whole grains.  
-  👉 [WHO: Healthy Diet](https://www.who.int/news-room/fact-sheets/detail/healthy-diet)  
+col1, col2 = st.columns(2)
 
-- 🏃 **Exercise regularly** (at least 30 minutes per day).  
-  👉 [CDC: Physical Activity](https://www.cdc.gov/physical-activity-basics/guidelines/adults.html)  
+with col1:
+    st.markdown("### 💡 Heart Health Tips")
+    st.markdown("""
+    <div class="card">
+    🥗 Eat a balanced diet → <a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" target="_blank">WHO: Healthy Diet</a><br><br>
+    🏃 Exercise regularly → <a href="https://www.cdc.gov/physical-activity-basics/guidelines/adults.html" target="_blank">CDC Guidelines</a><br><br>
+    🚭 Avoid smoking & alcohol → <a href="https://www.cdc.gov/tobacco/quit_smoking/index.htm" target="_blank">Quit Smoking - CDC</a><br><br>
+    🩺 Monitor BP, cholesterol & sugar → <a href="https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease-prevention/art-20046502" target="_blank">Mayo Clinic Guide</a><br><br>
+    👨‍⚕️ Regular medical checkups
+    </div>
+    """, unsafe_allow_html=True)
 
-- 🚭 **Avoid smoking and limit alcohol intake**.  
-  👉 [Quit Smoking - CDC](https://www.cdc.gov/tobacco/quit_smoking/index.htm)  
-
-- 🩺 **Monitor blood pressure, cholesterol, and blood sugar regularly**.  
-  👉 [Mayo Clinic Guide](https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease-prevention/art-20046502)  
-
-- 👨‍⚕️ **Visit your doctor for regular checkups**.  
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("### ⚡ Risk Factors to Watch")
-st.markdown("""
-<div class="card">
-- 🩸 **High blood pressure (Hypertension)**  
-  👉 [AHA: Hypertension](https://www.heart.org/en/health-topics/high-blood-pressure)  
-
-- 🧬 **High cholesterol (Hyperlipidemia)**  
-  👉 [CDC: Cholesterol Facts](https://www.cdc.gov/cholesterol/facts.htm)  
-
-- 🍩 **Diabetes or pre-diabetes**  
-  👉 [Diabetes.org](https://diabetes.org/)  
-
-- 🚬 **Smoking and excessive alcohol intake**  
-  👉 [CDC: Alcohol and Your Health](https://www.cdc.gov/alcohol/fact-sheets/alcohol-use.htm)  
-
-- ⚖️ **Obesity and sedentary lifestyle**  
-  👉 [WHO: Obesity Facts](https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight)  
-
-- 👨‍👩‍👧‍👦 **Family history of heart disease**  
-  👉 [NIH: Heart Disease & Family History](https://www.nhlbi.nih.gov/health/heart-disease)  
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("### 📞 Contact Your Doctor")
-st.info("""
-If you experience symptoms like **chest pain, shortness of breath, dizziness, or irregular heartbeat**,  
-please **consult a healthcare professional immediately**.
-""")
+with col2:
+    st.markdown("### ⚡ Risk Factors to Watch")
+    st.markdown("""
+    <div class="card">
+    🩸 High blood pressure → <a href="https://www.heart.org/en/health-topics/high-blood-pressure" target="_blank">AHA Guide</a><br><br>
+    🧬 High cholesterol → <a href="https://www.cdc.gov/cholesterol/facts.htm" target="_blank">CDC Facts</a><br><br>
+    🍩 Diabetes / pre-diabetes → <a href="https://diabetes.org/" target="_blank">Diabetes.org</a><br><br>
+    🚬 Smoking & alcohol → <a href="https://www.cdc.gov/alcohol/fact-sheets/alcohol-use.htm" target="_blank">CDC Alcohol Facts</a><br><br>
+    ⚖️ Obesity & inactivity → <a href="https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight" target="_blank">WHO: Obesity Facts</a><br><br>
+    👨‍👩‍👧 Family history → <a href="https://www.nhlbi.nih.gov/health/heart-disease" target="_blank">NIH Info</a>
+    </div>
+    """, unsafe_allow_html=True)
