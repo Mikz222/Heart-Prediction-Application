@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import joblib
-joblib.dump(pipeline, "heart_nb_pipeline.joblib")
 
 
 # ==========================
@@ -77,4 +76,5 @@ if st.button("🔍 Predict"):
 
     st.markdown("### 📊 Entered Patient Data")
     st.dataframe(input_df, use_container_width=True)
+
 
