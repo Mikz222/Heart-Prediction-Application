@@ -19,49 +19,67 @@ st.set_page_config(page_title="Heart Disease Prediction", page_icon="❤️", la
 # Custom CSS
 st.markdown("""
     <style>
-    body {
-        background: linear-gradient(135deg, #f8f9fa, #ffecec);
-        font-family: 'Segoe UI', sans-serif;
-    }
-    h1, h2, h3 {
-        color: #9B1B30;
-    }
-    .stButton>button {
-        width: 100%;
-        background: linear-gradient(90deg, #FF4B5C, #C81D25);
-        color: white;
-        border-radius: 12px;
-        height: 3.2em;
-        font-size: 18px;
-        font-weight: bold;
-        border: none;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-        transition: 0.3s;
-    }
-    .stButton>button:hover {
-        background: linear-gradient(90deg, #C81D25, #FF4B5C);
-        color: #FFD700;
-        transform: scale(1.02);
-    }
-    .result-card {
-        padding: 25px;
-        border-radius: 15px;
-        text-align: center;
-        margin-top: 20px;
-        font-size: 22px;
-        font-weight: bold;
-        box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-    }
-    .positive {
-        background-color: #FDEDED;
-        border: 3px solid #C81D25;
-        color: #8B0000;
-    }
-    .negative {
-        background-color: #E6FFEC;
-        border: 3px solid #228B22;
-        color: #155724;
-    }
+   /* Background */
+body {
+    background: linear-gradient(135deg, #E8F9F6, #FFFFFF);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Titles */
+h1, h2, h3 {
+    color: #006D77;
+    font-weight: bold;
+}
+
+/* Buttons */
+.stButton>button {
+    width: 100%;
+    background: linear-gradient(90deg, #48C6EF, #6F86D6);
+    color: white;
+    border-radius: 20px;
+    height: 3.2em;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+    transition: all 0.3s ease-in-out;
+}
+.stButton>button:hover {
+    background: linear-gradient(90deg, #6F86D6, #48C6EF);
+    color: #004D40;
+    transform: scale(1.05);
+}
+
+/* Result Cards */
+.result-card {
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
+}
+.positive {
+    background-color: #E6FFFA;
+    border: 3px solid #20C997;
+    color: #006D77;
+}
+.negative {
+    background-color: #FFF0F0;
+    border: 3px solid #E63946;
+    color: #B22222;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background: #F1FAFE;
+    border-right: 2px solid #E0F7FA;
+}
+section[data-testid="stSidebar"] h2 {
+    color: #006D77;
+}
+
     </style>
 """, unsafe_allow_html=True)
 
@@ -160,3 +178,4 @@ if st.button("🔍 Predict Heart Disease"):
 
     st.markdown("### 📝 Entered Patient Data")
     st.dataframe(input_df, use_container_width=True)
+
