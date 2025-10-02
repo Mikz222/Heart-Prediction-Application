@@ -7,80 +7,65 @@ import joblib
 # ==========================
 @st.cache_resource
 def load_model():
-    return joblib.load("heart_nb_pipeline.pkl")  # make sure filename matches
+    return joblib.load("heart_nb_pipeline.pkl")  # adjust filename if needed
 
 model = load_model()
 
 # ==========================
-# Custom CSS for Styling
+# Custom CSS (White + Blue Theme)
 # ==========================
 st.markdown("""
 <style>
 /* Global */
 body, p, div, label {
-    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     font-size: 18px !important;
-    color: #2C2C2C !important;
+    color: #0D47A1 !important; /* Deep blue text */
 }
 
 /* Title */
-h1 {
-    font-size: 46px !important;
-    font-weight: 800 !important;
-    color: #1E3D59 !important;
-    text-align: center !important;
-    margin-bottom: 20px;
-}
-
-/* Subheaders */
-h2, h3 {
-    color: #E07A5F !important;
+h1, h2, h3 {
+    color: #0D47A1 !important;  
     font-weight: 700 !important;
 }
 
 /* Sidebar */
 [data-testid="stSidebar"] {
-    background-color: #FFFFFF !important;
-    padding: 20px !important;
-    border-right: 3px solid #1E3D59 !important;
+    background-color: #0D47A1 !important; 
+    color: white !important;
+}
+[data-testid="stSidebar"] label {
+    color: white !important;
+}
+[data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+    color: white !important;
 }
 
 /* Buttons */
 div.stButton > button {
-    background-color: #1E3D59 !important;
-    color: #FFFFFF !important;
-    border-radius: 12px !important;
-    padding: 12px 24px !important;
+    background-color: #0D47A1 !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
     font-size: 18px !important;
-    font-weight: bold !important;
     border: none !important;
     transition: 0.3s;
 }
 div.stButton > button:hover {
-    background-color: #E07A5F !important;
-    transform: scale(1.05);
+    background-color: #1565C0 !important;
+    transform: scale(1.03);
 }
 
-/* Cards */
+/* Result Box */
 .result-box {
-    padding: 25px;
-    border-radius: 15px;
-    background: linear-gradient(135deg, #1E3D59, #E07A5F);
+    padding: 20px;
+    border-radius: 12px;
+    background: #0D47A1;
     color: white !important;
     text-align: center;
     font-size: 22px;
     font-weight: 600;
     margin: 20px 0;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
-}
-.info-card {
-    padding: 18px;
-    margin: 12px 0;
-    border-radius: 12px;
-    background-color: #FFFFFF;
-    border: 2px solid #E07A5F;
-    color: #2C2C2C !important;
-    font-size: 16px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -94,17 +79,12 @@ with st.sidebar:
     age = st.number_input("Age (years)", min_value=20, max_value=100, value=40)
     gender = st.selectbox("Gender", ["Male", "Female"])
     education = st.selectbox("Education Level", ["1 - Primary", "2 - Secondary", "3 - College", "4 - Graduate"])
-
     currentSmoker = st.selectbox("Currently Smokes?", [0, 1])
-    st.caption("0 = No, 1 = Yes")
-
     cigsPerDay = st.number_input("Cigarettes per Day", min_value=0, max_value=60, value=0)
-
     BPMeds = st.selectbox("On Blood Pressure Medication?", [0, 1])
     prevalentStroke = st.selectbox("History of Stroke?", [0, 1])
     prevalentHyp = st.selectbox("Hypertension?", [0, 1])
     diabetes = st.selectbox("Diabetes?", [0, 1])
-
     totChol = st.number_input("Total Cholesterol (mg/dL)", min_value=100, max_value=600, value=200)
     sysBP = st.number_input("Systolic BP", min_value=80, max_value=250, value=120)
     diaBP = st.number_input("Diastolic BP", min_value=50, max_value=150, value=80)
@@ -134,12 +114,10 @@ with st.sidebar:
 # ==========================
 # Main Page Layout
 # ==========================
-st.title("❤️ Heart Disease Prediction App")
+st.title("💙 Heart Disease Prediction App")
 st.markdown("""
-Welcome to the **Heart Disease Prediction Tool**.  
-Enter patient details in the **sidebar** and get instant predictions.  
-
-⚠️ *Note: This is a support tool only, not a substitute for medical advice.*
+Enter patient details in the sidebar to estimate the risk of heart disease.  
+⚠️ *Note: This tool does not replace medical advice.*
 """)
 
 # --- Prediction ---
@@ -148,47 +126,56 @@ if st.button("🔍 Predict Heart Disease"):
     pred = model.predict(input_df)[0]
 
     if pred == 1:
-        st.markdown(f"<div class='result-box'>⚠️ High Risk: Patient may have heart disease<br>Confidence: {proba*100:.2f}%</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='result-box'>⚠️ High Risk: Heart disease likely<br>Confidence: {proba*100:.2f}%</div>", unsafe_allow_html=True)
     else:
-        st.markdown(f"<div class='result-box'>✅ Low Risk: Patient unlikely to have heart disease<br>Confidence: {(1-proba)*100:.2f}%</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='result-box'>✅ Low Risk: Heart disease unlikely<br>Confidence: {(1-proba)*100:.2f}%</div>", unsafe_allow_html=True)
 
-    # Show Patient Data
     with st.expander("📋 Patient Data Entered"):
         st.dataframe(input_df, use_container_width=True)
 
-# --- Info Sections ---
-col1, col2 = st.columns(2)
+# ==========================
+# Info Sections with Links
+# ==========================
+st.markdown("### 💡 Heart Health Tips")
+st.write("""
+- 🥗 **Eat a balanced diet** rich in fruits, vegetables, and whole grains.  
+  👉 [Learn more (WHO)](https://www.who.int/news-room/fact-sheets/detail/healthy-diet)  
 
-with col1:
-    st.markdown("### 🩺 Heart Health Tips")
-    st.markdown("""
-    <div class='info-card'>
-    ✅ Eat more fruits, vegetables, whole grains. <br>
-    ✅ Exercise at least 30 mins daily. <br>
-    ✅ Avoid smoking & limit alcohol. <br>
-    ✅ Regularly monitor BP, sugar, cholesterol. <br>
-    ✅ Visit your doctor for checkups.  
-    </div>
-    """, unsafe_allow_html=True)
+- 🏃 **Exercise regularly** (at least 30 minutes per day).  
+  👉 [See CDC Guidelines](https://www.cdc.gov/physical-activity-basics/guidelines/adults.html)  
 
-with col2:
-    st.markdown("### 📊 Risk Factors to Watch")
-    st.markdown("""
-    <div class='info-card'>
-    ⚡ High blood pressure (Hypertension) <br>
-    ⚡ High cholesterol <br>
-    ⚡ Diabetes / pre-diabetes <br>
-    ⚡ Smoking, alcohol <br>
-    ⚡ Obesity, sedentary lifestyle <br>
-    ⚡ Family history of heart disease  
-    </div>
-    """, unsafe_allow_html=True)
+- 🚭 **Avoid smoking and limit alcohol intake**.  
+  👉 [Quit Smoking Help (CDC)](https://www.cdc.gov/tobacco/quit_smoking/index.htm)  
 
-# --- Contact Section ---
+- 🩺 **Monitor blood pressure, cholesterol, and blood sugar regularly**.  
+  👉 [Mayo Clinic: Heart Disease Prevention](https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease-prevention/art-20046502)  
+
+- 👨‍⚕️ **Visit your doctor for regular checkups**.  
+""")
+
+st.markdown("### ⚡ Risk Factors to Watch")
+st.write("""
+- 🩸 **High blood pressure (Hypertension)**  
+  👉 [American Heart Association: Hypertension](https://www.heart.org/en/health-topics/high-blood-pressure)  
+
+- 🧬 **High cholesterol (Hyperlipidemia)**  
+  👉 [CDC: Cholesterol Facts](https://www.cdc.gov/cholesterol/facts.htm)  
+
+- 🍩 **Diabetes or pre-diabetes**  
+  👉 [Diabetes.org](https://diabetes.org/)  
+
+- 🚬 **Smoking and excessive alcohol intake**  
+  👉 [CDC: Alcohol and Your Health](https://www.cdc.gov/alcohol/fact-sheets/alcohol-use.htm)  
+
+- ⚖️ **Obesity and sedentary lifestyle**  
+  👉 [WHO: Obesity and Overweight](https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight)  
+
+- 👨‍👩‍👧‍👦 **Family history of heart disease**  
+  👉 [NIH: Family History and Heart Disease](https://www.nhlbi.nih.gov/health/heart-disease)  
+""")
+
 st.markdown("### 📞 Contact Your Doctor")
-st.markdown("""
-<div class='info-card'>
+st.info("""
 If you experience symptoms like **chest pain, shortness of breath, dizziness, or irregular heartbeat**,  
-please **consult a healthcare professional immediately**.  
-</div>
-""", unsafe_allow_html=True)
+please **consult a healthcare professional immediately**.
+""")
