@@ -35,19 +35,21 @@ h1, h2, h3 {
     box-shadow: 2px 0 8px rgba(0,0,0,0.1);
 }
 
-/* Fix Ghost Input Fields */
+/* Input fields */
 [data-baseweb="input"] input,
 [data-baseweb="select"] select {
     background-color: white !important;
     border: 1px solid #ccc !important;
     border-radius: 8px !important;
-    box-shadow: 1px 1px 6px rgba(0,0,0,0.1) !important;
-    font-size: 16px !important;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1) !important;
+    font-size: 15px !important;
     padding: 10px !important;
+    transition: all 0.3s ease;
 }
-[data-baseweb="input"] div,
-[data-baseweb="select"] div {
-    background: transparent !important;
+[data-baseweb="input"] input:focus,
+[data-baseweb="select"] select:focus {
+    border-color: #0D47A1 !important;
+    box-shadow: 0 0 10px rgba(13,71,161,0.3) !important;
 }
 
 /* Buttons */
@@ -82,14 +84,18 @@ div.stButton > button:hover {
     animation: fadeIn 0.8s ease-in-out;
 }
 
-/* Info Cards */
+/* Info Cards - Equal Height */
+.card-container {
+    display: flex;
+    gap: 20px;
+}
 .card {
+    flex: 1;
     background-color: #ffffff;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 2px 2px 12px rgba(0,0,0,0.15);
-    margin-bottom: 20px;
-    min-height: 320px; /* Force equal height */
+    min-height: 360px; /* Force equal size */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -167,31 +173,31 @@ if st.button("🔍 Predict Heart Disease"):
         st.dataframe(input_df, use_container_width=True)
 
 # ==========================
-# Info Section (Side by Side Equal Cards)
+# Info Section (Equal Height Cards)
 # ==========================
-col1, col2 = st.columns(2)
+st.markdown("<div class='card-container'>", unsafe_allow_html=True)
 
-with col1:
-    st.markdown("### 💡 Heart Health Tips")
-    st.markdown("""
-    <div class="card">
-    🥗 Eat a balanced diet → <a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" target="_blank">WHO: Healthy Diet</a><br><br>
-    🏃 Exercise regularly → <a href="https://www.cdc.gov/physical-activity-basics/guidelines/adults.html" target="_blank">CDC Guidelines</a><br><br>
-    🚭 Avoid smoking & alcohol → <a href="https://www.cdc.gov/tobacco/quit_smoking/index.htm" target="_blank">Quit Smoking - CDC</a><br><br>
-    🩺 Monitor BP, cholesterol & sugar → <a href="https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease-prevention/art-20046502" target="_blank">Mayo Clinic Guide</a><br><br>
-    👨‍⚕️ Regular checkups are essential.
-    </div>
-    """, unsafe_allow_html=True)
+st.markdown("""
+<div class="card">
+<h3>💡 Heart Health Tips</h3>
+🥗 Eat a balanced diet → <a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" target="_blank">WHO: Healthy Diet</a><br><br>
+🏃 Exercise regularly → <a href="https://www.cdc.gov/physical-activity-basics/guidelines/adults.html" target="_blank">CDC Guidelines</a><br><br>
+🚭 Avoid smoking & alcohol → <a href="https://www.cdc.gov/tobacco/quit_smoking/index.htm" target="_blank">Quit Smoking - CDC</a><br><br>
+🩺 Monitor BP, cholesterol & sugar → <a href="https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease-prevention/art-20046502" target="_blank">Mayo Clinic Guide</a><br><br>
+👨‍⚕️ Regular checkups are essential.
+</div>
+""", unsafe_allow_html=True)
 
-with col2:
-    st.markdown("### ⚡ Risk Factors to Watch")
-    st.markdown("""
-    <div class="card">
-    🩸 High blood pressure → <a href="https://www.heart.org/en/health-topics/high-blood-pressure" target="_blank">AHA Guide</a><br><br>
-    🧬 High cholesterol → <a href="https://www.cdc.gov/cholesterol/facts.htm" target="_blank">CDC Facts</a><br><br>
-    🍩 Diabetes / pre-diabetes → <a href="https://diabetes.org/" target="_blank">Diabetes.org</a><br><br>
-    🚬 Smoking & alcohol → <a href="https://www.cdc.gov/alcohol/fact-sheets/alcohol-use.htm" target="_blank">CDC Alcohol Facts</a><br><br>
-    ⚖️ Obesity & inactivity → <a href="https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight" target="_blank">WHO: Obesity Facts</a><br><br>
-    👨‍👩‍👧 Family history → <a href="https://www.nhlbi.nih.gov/health/heart-disease" target="_blank">NIH Info</a>
-    </div>
-    """, unsafe_allow_html=True)
+st.markdown("""
+<div class="card">
+<h3>⚡ Risk Factors to Watch</h3>
+🩸 High blood pressure → <a href="https://www.heart.org/en/health-topics/high-blood-pressure" target="_blank">AHA Guide</a><br><br>
+🧬 High cholesterol → <a href="https://www.cdc.gov/cholesterol/facts.htm" target="_blank">CDC Facts</a><br><br>
+🍩 Diabetes / pre-diabetes → <a href="https://diabetes.org/" target="_blank">Diabetes.org</a><br><br>
+🚬 Smoking & alcohol → <a href="https://www.cdc.gov/alcohol/fact-sheets/alcohol-use.htm" target="_blank">CDC Alcohol Facts</a><br><br>
+⚖️ Obesity & inactivity → <a href="https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight" target="_blank">WHO: Obesity Facts</a><br><br>
+👨‍👩‍👧 Family history → <a href="https://www.nhlbi.nih.gov/health/heart-disease" target="_blank">NIH Info</a>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True)
