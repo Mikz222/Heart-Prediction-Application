@@ -1,7 +1,7 @@
 [theme]
 base="light"
-primaryColor="#1E3D59"           
-backgroundColor="#FDF6EC"        
-secondaryBackgroundColor="#FFFFFF" 
-textColor="#2C2C2C"               
+primaryColor="#0D47A1"            # Deep Blue
+backgroundColor="#FFFFFF"         # White
+secondaryBackgroundColor="#E3F2FD" # Light Blue for cards/sections
+textColor="#0D47A1"               # Blue text
 font="sans serif"
