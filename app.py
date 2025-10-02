@@ -210,8 +210,24 @@ if st.button("🔍 Predict Heart Disease"):
 
     st.info("ℹ️ *These values are based on model probability outputs. The threshold is **50%** for classifying high vs. low risk.*")
 
-    with st.expander("📋 Patient Data Entered"):
-        st.dataframe(input_df, use_container_width=True)
+   with st.expander("📋 Patient Data Entered", expanded=True):
+    st.markdown(
+        """
+        <style>
+        .big-dataframe-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        </style>
+        """, unsafe_allow_html=True
+    )
+    st.markdown("<div class='big-dataframe-container'>", unsafe_allow_html=True)
+    st.dataframe(input_df, use_container_width=True, height=400)  # bigger table
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ==========================
@@ -247,4 +263,5 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 
