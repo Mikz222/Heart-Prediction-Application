@@ -10,32 +10,32 @@ def load_model():
     return joblib.load("heart_nb_pipeline.pkl")  # make sure filename matches
 
 model = load_model()
+
 # ==========================
 # Custom CSS for Styling
 # ==========================
 st.markdown("""
 <style>
-/* Global font and size */
+/* Global */
 body, p, div, label {
     font-family: 'Roboto', 'Segoe UI', sans-serif;
     font-size: 18px !important;
-    color: #2C2C2C !important;  /* Dark gray for better contrast */
-    background-color: #FDF6EC !important; /* Beige background */
+    color: #2C2C2C !important;
 }
 
 /* Title */
 h1 {
-    font-size: 42px !important;
-    font-weight: 700 !important;
-    color: #1E3D59 !important;   /* Deep navy title */
+    font-size: 46px !important;
+    font-weight: 800 !important;
+    color: #1E3D59 !important;
     text-align: center !important;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 /* Subheaders */
 h2, h3 {
-    color: #E07A5F !important;   /* Warm coral subheaders */
-    font-weight: 600 !important;
+    color: #E07A5F !important;
+    font-weight: 700 !important;
 }
 
 /* Sidebar */
@@ -43,13 +43,11 @@ h2, h3 {
     background-color: #FFFFFF !important;
     padding: 20px !important;
     border-right: 3px solid #1E3D59 !important;
-    font-size: 16px !important;
-    color: #2C2C2C !important;
 }
 
 /* Buttons */
 div.stButton > button {
-    background-color: #1E3D59 !important;  /* Deep navy button */
+    background-color: #1E3D59 !important;
     color: #FFFFFF !important;
     border-radius: 12px !important;
     padding: 12px 24px !important;
@@ -59,11 +57,11 @@ div.stButton > button {
     transition: 0.3s;
 }
 div.stButton > button:hover {
-    background-color: #E07A5F !important;  /* Coral on hover */
-    transform: scale(1.03);
+    background-color: #E07A5F !important;
+    transform: scale(1.05);
 }
 
-/* Prediction Result Card */
+/* Cards */
 .result-box {
     padding: 25px;
     border-radius: 15px;
@@ -72,14 +70,12 @@ div.stButton > button:hover {
     text-align: center;
     font-size: 22px;
     font-weight: 600;
-    margin: 30px 0;
+    margin: 20px 0;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
 }
-
-/* Info Cards */
 .info-card {
     padding: 18px;
-    margin: 15px 0;
+    margin: 12px 0;
     border-radius: 12px;
     background-color: #FFFFFF;
     border: 2px solid #E07A5F;
@@ -88,8 +84,6 @@ div.stButton > button:hover {
 }
 </style>
 """, unsafe_allow_html=True)
-
-
 
 # ==========================
 # Sidebar - Patient Input
@@ -107,16 +101,9 @@ with st.sidebar:
     cigsPerDay = st.number_input("Cigarettes per Day", min_value=0, max_value=60, value=0)
 
     BPMeds = st.selectbox("On Blood Pressure Medication?", [0, 1])
-    st.caption("0 = No, 1 = Yes")
-
     prevalentStroke = st.selectbox("History of Stroke?", [0, 1])
-    st.caption("0 = No, 1 = Yes")
-
     prevalentHyp = st.selectbox("Hypertension?", [0, 1])
-    st.caption("0 = No, 1 = Yes")
-
     diabetes = st.selectbox("Diabetes?", [0, 1])
-    st.caption("0 = No, 1 = Yes")
 
     totChol = st.number_input("Total Cholesterol (mg/dL)", min_value=100, max_value=600, value=200)
     sysBP = st.number_input("Systolic BP", min_value=80, max_value=250, value=120)
@@ -142,60 +129,62 @@ with st.sidebar:
         "heartRate": heartRate,
         "glucose": glucose,
     }
-
     input_df = pd.DataFrame([input_data])
 
 # ==========================
-# Main Page - App Info
+# Main Page Layout
 # ==========================
 st.title("❤️ Heart Disease Prediction App")
 st.markdown("""
 Welcome to the **Heart Disease Prediction Tool**.  
-Enter patient details in the **sidebar** to estimate the likelihood of heart disease.  
+Enter patient details in the **sidebar** and get instant predictions.  
 
-⚠️ **Note:** This is a support tool only, not a substitute for professional medical advice.
+⚠️ *Note: This is a support tool only, not a substitute for medical advice.*
 """)
 
-# ==========================
-# Prediction
-# ==========================
+# --- Prediction ---
 if st.button("🔍 Predict Heart Disease"):
     proba = model.predict_proba(input_df)[:, 1][0]
     pred = model.predict(input_df)[0]
 
-    st.subheader("📌 Prediction Result")
     if pred == 1:
-        st.error(f"⚠️ The model predicts: **Most likely have heart disease**\n\nConfidence: {proba*100:.2f}%")
+        st.markdown(f"<div class='result-box'>⚠️ High Risk: Patient may have heart disease<br>Confidence: {proba*100:.2f}%</div>", unsafe_allow_html=True)
     else:
-        st.success(f"✅ The model predicts: **Most likely don’t have heart disease**\n\nConfidence: {(1-proba)*100:.2f}%")
+        st.markdown(f"<div class='result-box'>✅ Low Risk: Patient unlikely to have heart disease<br>Confidence: {(1-proba)*100:.2f}%</div>", unsafe_allow_html=True)
 
-    st.markdown("### 📋 Patient Data Entered")
-    st.dataframe(input_df, use_container_width=True)
+    # Show Patient Data
+    with st.expander("📋 Patient Data Entered"):
+        st.dataframe(input_df, use_container_width=True)
 
-# After prediction result
-st.markdown("### 🩺 Heart Health Tips")
-st.markdown("""
-<div class='info-card'>
-✅ Maintain a balanced diet (fruits, vegetables, whole grains).  
-✅ Exercise at least **30 minutes a day**.  
-✅ Avoid smoking & limit alcohol.  
-✅ Monitor blood pressure, sugar, and cholesterol regularly.  
-✅ Visit your doctor for regular checkups.  
-</div>
-""", unsafe_allow_html=True)
+# --- Info Sections ---
+col1, col2 = st.columns(2)
 
-st.markdown("### 📊 Risk Factors to Watch")
-st.markdown("""
-<div class='info-card'>
-⚡ High blood pressure (Hypertension)  
-⚡ High cholesterol (Hyperlipidemia)  
-⚡ Diabetes or pre-diabetes  
-⚡ Smoking and excessive alcohol intake  
-⚡ Obesity and sedentary lifestyle  
-⚡ Family history of heart disease  
-</div>
-""", unsafe_allow_html=True)
+with col1:
+    st.markdown("### 🩺 Heart Health Tips")
+    st.markdown("""
+    <div class='info-card'>
+    ✅ Eat more fruits, vegetables, whole grains. <br>
+    ✅ Exercise at least 30 mins daily. <br>
+    ✅ Avoid smoking & limit alcohol. <br>
+    ✅ Regularly monitor BP, sugar, cholesterol. <br>
+    ✅ Visit your doctor for checkups.  
+    </div>
+    """, unsafe_allow_html=True)
 
+with col2:
+    st.markdown("### 📊 Risk Factors to Watch")
+    st.markdown("""
+    <div class='info-card'>
+    ⚡ High blood pressure (Hypertension) <br>
+    ⚡ High cholesterol <br>
+    ⚡ Diabetes / pre-diabetes <br>
+    ⚡ Smoking, alcohol <br>
+    ⚡ Obesity, sedentary lifestyle <br>
+    ⚡ Family history of heart disease  
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- Contact Section ---
 st.markdown("### 📞 Contact Your Doctor")
 st.markdown("""
 <div class='info-card'>
@@ -203,9 +192,3 @@ If you experience symptoms like **chest pain, shortness of breath, dizziness, or
 please **consult a healthcare professional immediately**.  
 </div>
 """, unsafe_allow_html=True)
-
-
-
-
-
-
