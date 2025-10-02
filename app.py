@@ -12,11 +12,11 @@ def load_model():
 model = load_model()
 
 # ==========================
-# Custom CSS (Clean UI)
+# Custom CSS
 # ==========================
 st.markdown("""
 <style>
-/* Global font */
+/* Global */
 body, p, div, label {
     font-family: 'Segoe UI', sans-serif;
     color: #000000 !important;
@@ -32,40 +32,45 @@ h1, h2, h3 {
 [data-testid="stSidebar"] {
     background-color: #f9f9f9 !important;
     padding: 20px;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
 }
 
-/* Remove double ghost text fields */
-input, textarea, select {
+/* Fix Ghost Input Fields */
+[data-baseweb="input"] input,
+[data-baseweb="select"] select {
     background-color: white !important;
     border: 1px solid #ccc !important;
     border-radius: 8px !important;
-    box-shadow: 1px 1px 8px rgba(0,0,0,0.1) !important;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.1) !important;
     font-size: 16px !important;
-    padding: 8px 10px !important;
+    padding: 10px !important;
+}
+[data-baseweb="input"] div,
+[data-baseweb="select"] div {
+    background: transparent !important;
 }
 
 /* Buttons */
 div.stButton > button {
     background: linear-gradient(135deg, #1565C0, #0D47A1) !important;
     color: white !important;
-    border-radius: 12px !important;
-    padding: 14px 28px !important;
+    border-radius: 10px !important;
+    padding: 14px 30px !important;
     font-size: 18px !important;
     font-weight: bold !important;
     border: none !important;
     box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 div.stButton > button:hover {
     background: linear-gradient(135deg, #1E88E5, #1565C0) !important;
-    transform: scale(1.05);
+    transform: scale(1.06);
     box-shadow: 4px 4px 14px rgba(0,0,0,0.3);
 }
 
 /* Result Box */
 .result-box {
-    padding: 20px;
+    padding: 25px;
     border-radius: 12px;
     background: #0D47A1;
     color: white !important;
@@ -74,15 +79,31 @@ div.stButton > button:hover {
     font-weight: 600;
     margin: 20px 0;
     box-shadow: 3px 3px 12px rgba(0,0,0,0.2);
+    animation: fadeIn 0.8s ease-in-out;
 }
 
-/* Card Containers */
+/* Info Cards */
 .card {
     background-color: #ffffff;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+    box-shadow: 2px 2px 12px rgba(0,0,0,0.15);
     margin-bottom: 20px;
+    min-height: 320px; /* Force equal height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 4px 4px 16px rgba(0,0,0,0.25);
+}
+
+/* Smooth Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -92,7 +113,6 @@ div.stButton > button:hover {
 # ==========================
 with st.sidebar:
     st.header("📝 Patient Details")
-
     age = st.number_input("Age (years)", min_value=20, max_value=100, value=40)
     gender = st.selectbox("Gender", ["Male", "Female"])
     education = st.selectbox("Education Level", ["1 - Primary", "2 - Secondary", "3 - College", "4 - Graduate"])
@@ -132,23 +152,22 @@ with st.sidebar:
 # Main Page
 # ==========================
 st.title("💙 Heart Disease Prediction App")
-st.markdown("⚠️ *Note: This tool does not replace medical advice.*")
+st.markdown("⚠️ *This tool provides insights but does not replace professional medical advice.*")
 
-# Prediction
 if st.button("🔍 Predict Heart Disease"):
     proba = model.predict_proba(input_df)[:, 1][0]
     pred = model.predict(input_df)[0]
 
     if pred == 1:
-        st.markdown(f"<div class='result-box'>⚠️ High Risk: Heart disease likely<br>Confidence: {proba*100:.2f}%</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='result-box'>⚠️ High Risk: Heart disease likely<br>🔢 Risk Probability: {proba*100:.2f}%<br>💡 Recommendation: Please consult a cardiologist immediately.</div>", unsafe_allow_html=True)
     else:
-        st.markdown(f"<div class='result-box'>✅ Low Risk: Heart disease unlikely<br>Confidence: {(1-proba)*100:.2f}%</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='result-box'>✅ Low Risk: Heart disease unlikely<br>🔢 Risk Probability: {(1-proba)*100:.2f}%<br>💡 Recommendation: Maintain healthy lifestyle habits.</div>", unsafe_allow_html=True)
 
     with st.expander("📋 Patient Data Entered"):
         st.dataframe(input_df, use_container_width=True)
 
 # ==========================
-# Info Section (Side by Side Cards)
+# Info Section (Side by Side Equal Cards)
 # ==========================
 col1, col2 = st.columns(2)
 
@@ -160,7 +179,7 @@ with col1:
     🏃 Exercise regularly → <a href="https://www.cdc.gov/physical-activity-basics/guidelines/adults.html" target="_blank">CDC Guidelines</a><br><br>
     🚭 Avoid smoking & alcohol → <a href="https://www.cdc.gov/tobacco/quit_smoking/index.htm" target="_blank">Quit Smoking - CDC</a><br><br>
     🩺 Monitor BP, cholesterol & sugar → <a href="https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease-prevention/art-20046502" target="_blank">Mayo Clinic Guide</a><br><br>
-    👨‍⚕️ Regular medical checkups
+    👨‍⚕️ Regular checkups are essential.
     </div>
     """, unsafe_allow_html=True)
 
