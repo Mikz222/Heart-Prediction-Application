@@ -171,5 +171,39 @@ if st.button("🔍 Predict Heart Disease"):
     st.markdown("### 📋 Patient Data Entered")
     st.dataframe(input_df, use_container_width=True)
 
+# After prediction result
+st.markdown("### 🩺 Heart Health Tips")
+st.markdown("""
+<div class='info-card'>
+✅ Maintain a balanced diet (fruits, vegetables, whole grains).  
+✅ Exercise at least **30 minutes a day**.  
+✅ Avoid smoking & limit alcohol.  
+✅ Monitor blood pressure, sugar, and cholesterol regularly.  
+✅ Visit your doctor for regular checkups.  
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("### 📊 Risk Factors to Watch")
+st.markdown("""
+<div class='info-card'>
+⚡ High blood pressure (Hypertension)  
+⚡ High cholesterol (Hyperlipidemia)  
+⚡ Diabetes or pre-diabetes  
+⚡ Smoking and excessive alcohol intake  
+⚡ Obesity and sedentary lifestyle  
+⚡ Family history of heart disease  
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("### 📞 Contact Your Doctor")
+st.markdown("""
+<div class='info-card'>
+If you experience symptoms like **chest pain, shortness of breath, dizziness, or irregular heartbeat**,  
+please **consult a healthcare professional immediately**.  
+</div>
+""", unsafe_allow_html=True)
+
+
+
 
 
