@@ -135,7 +135,7 @@ with st.sidebar:
     age = st.number_input("Age (years)", min_value=20, max_value=100, value=40)
     gender = st.selectbox("Gender", ["Male", "Female"])
     education = st.selectbox("Education Level", ["1 - Primary", "2 - Secondary", "3 - College", "4 - Graduate"])
-    currentSmoker = st.selectbox("Currently Smokes?", [0, 1])
+    currentSmoker = st.selectbox("Currently Smoking?", [0, 1])
     cigsPerDay = st.number_input("Cigarettes per Day", min_value=0, max_value=60, value=0)
     BPMeds = st.selectbox("On Blood Pressure Medication?", [0, 1])
     prevalentStroke = st.selectbox("History of Stroke?", [0, 1])
@@ -271,6 +271,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 
