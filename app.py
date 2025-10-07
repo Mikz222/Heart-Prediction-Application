@@ -174,69 +174,91 @@ st.title("💙 Heart Disease Prediction App")
 st.markdown("⚠️ *This tool provides insights but does not replace professional medical advice.*")
 
 # ==========================
-# Prediction
+# Prediction & Prescription
 # ==========================
 if st.button("🔍 Predict Heart Disease"):
     proba = model.predict_proba(input_df)[:, 1][0]
     pred = model.predict(input_df)[0]
 
-    # Result Message
+    # Define result and recommendations
     if pred == 1:
-        st.markdown(
-            f"<div class='result-box'>⚠️ High Risk: Heart disease likely<br>"
-            f"🔢 Risk Probability: {proba*100:.2f}%<br>"
-            f"💡 Recommendation: Please consult a cardiologist immediately.</div>",
-            unsafe_allow_html=True
-        )
+        risk_status = "⚠️ High Risk: Heart disease likely"
+        color_gradient = "linear-gradient(135deg, #D32F2F, #B71C1C)"
+        recommendation = """
+        <ul>
+            <li>🩺 Schedule a full cardiovascular check-up immediately.</li>
+            <li>💊 Take prescribed medications consistently.</li>
+            <li>🚭 Stop smoking and limit alcohol intake.</li>
+            <li>🏃 Engage in light daily exercise (as approved by a doctor).</li>
+            <li>🥗 Adopt a heart-healthy diet — reduce salt and saturated fats.</li>
+        </ul>
+        """
     else:
-        st.markdown(
-            f"<div class='result-box'>✅ Low Risk: Heart disease unlikely<br>"
-            f"🔢 Risk Probability: {(1-proba)*100:.2f}%<br>"
-            f"💡 Recommendation: Maintain healthy lifestyle habits.</div>",
-            unsafe_allow_html=True
-        )
+        risk_status = "✅ Low Risk: Heart disease unlikely"
+        color_gradient = "linear-gradient(135deg, #2E7D32, #1B5E20)"
+        recommendation = """
+        <ul>
+            <li>🥗 Continue maintaining a balanced diet.</li>
+            <li>🏃 Stay physically active (at least 30 mins/day).</li>
+            <li>🚭 Avoid smoking and excess alcohol.</li>
+            <li>🩺 Monitor your blood pressure, glucose, and cholesterol.</li>
+            <li>😌 Manage stress through relaxation and sleep.</li>
+        </ul>
+        """
 
-    # Extra Prediction Statistics
-    st.subheader("📊 Prediction Statistics")
-    st.progress(int(proba * 100))  # probability progress bar
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("🔹 Risk Probability", f"{proba*100:.2f}%")
-    with col2:
-        st.metric("✅ Confidence (Low Risk)", f"{(1-proba)*100:.2f}%")
-    with col3:
-        st.metric("⚠️ Confidence (High Risk)", f"{proba*100:.2f}%")
+    # Combined prescription & insights card
+    st.markdown(f"""
+    <style>
+    .prescription-box {{
+        background: {color_gradient};
+        color: white !important;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+        animation: fadeIn 0.8s ease-in-out;
+        margin-top: 25px;
+        line-height: 1.6;
+    }}
+    .prescription-box h2 {{
+        text-align: center;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }}
+    .prescription-box h3 {{
+        margin-top: 25px;
+        font-weight: 700;
+        border-bottom: 2px solid rgba(255,255,255,0.4);
+        padding-bottom: 5px;
+    }}
+    .prescription-box ul {{
+        margin-left: 20px;
+    }}
+    .insight-box {{
+        background: rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 15px;
+        margin-top: 15px;
+    }}
+    </style>
 
-    st.info("ℹ️ *These values are based on model probability outputs. The threshold is **50%** for classifying high vs. low risk.*")
+    <div class="prescription-box">
+        <h2>{risk_status}</h2>
+        <h3>🩹 Personalized Prescription</h3>
+        {recommendation}
+        
+        <div class="insight-box">
+            <h3>📊 Model Insights</h3>
+            <p>🔹 Risk Probability: <b>{proba*100:.2f}%</b></p>
+            <p>✅ Confidence (Low Risk): <b>{(1-proba)*100:.2f}%</b></p>
+            <p>⚠️ Confidence (High Risk): <b>{proba*100:.2f}%</b></p>
+            <p>💬 Interpretation: A risk probability above <b>50%</b> suggests a likely presence of heart disease.</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-
-    with st.expander("📋 Patient Data Entered", expanded=True):
-        st.markdown(
-            """
-            <style>
-            .patient-data-box {
-                background: linear-gradient(135deg, #f9f9f9, #ffffff);
-                border-radius: 12px;
-                padding: 15px;
-                box-shadow: 0px 3px 12px rgba(0,0,0,0.12);
-                margin-top: 12px;
-                margin-bottom: 12px;
-                border: 1px solid #e0e0e0;
-            }
-            .patient-data-box h4 {
-                text-align: center;
-                color: #0D47A1;
-                font-weight: 700;
-                margin-bottom: 10px;
-            }
-            </style>
-            """, unsafe_allow_html=True
-        )
-        st.markdown("<div class='patient-data-box'>", unsafe_allow_html=True)
-        st.markdown("<h4>Entered Patient Details</h4>", unsafe_allow_html=True)
-        st.dataframe(input_df, use_container_width=True, height=220)  # smaller height
-        st.markdown("</div>", unsafe_allow_html=True)
+    # Show entered patient details
+    with st.expander("📋 Patient Data Entered", expanded=False):
+        st.dataframe(input_df, use_container_width=True, height=220)
 
 # ==========================
 # Info Section (Two Cards)
@@ -271,6 +293,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 
