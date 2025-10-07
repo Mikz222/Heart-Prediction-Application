@@ -138,7 +138,7 @@ with st.sidebar:
     currentSmoker = st.selectbox("Currently Smoking?", [0, 1])
     cigsPerDay = st.number_input("Cigarettes per Day", min_value=0, max_value=60, value=0)
     BPMeds = st.selectbox("On Blood Pressure Medication?", [0, 1])
-    prevalentStroke = st.selectbox("History of Stroke?", [0, 1])
+    prevalentStroke = st.selectbox("History of Stroke?", ["Yes","No"])
     prevalentHyp = st.selectbox("Hypertension?", [0, 1])
     diabetes = st.selectbox("Diabetes?", [0, 1])
     totChol = st.number_input("Total Cholesterol (mg/dL)", min_value=100, max_value=600, value=200)
@@ -271,6 +271,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 
