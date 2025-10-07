@@ -132,6 +132,7 @@ div.stButton > button:hover {
 # ==========================
 with st.sidebar:
     st.header("📝 Patient Details")
+    st(" 0= Yes , 1= No ")
     age = st.number_input("Age (years)", min_value=20, max_value=100, value=40)
     gender = st.selectbox("Gender", ["Male", "Female"])
     education = st.selectbox("Education Level", ["1-Primary", "2-Secondary", "3-College", "4-Graduate"])
@@ -271,6 +272,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 
